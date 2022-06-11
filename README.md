@@ -1,8 +1,8 @@
-# influxdb-cxx
+# influxdb-cxx-fork
 
-[![Build Status](https://travis-ci.com/awegrzyn/influxdb-cxx.svg?branch=master)](https://travis-ci.com/awegrzyn/influxdb-cxx)
-[![codecov](https://codecov.io/gh/awegrzyn/influxdb-cxx/branch/master/graph/badge.svg)](https://codecov.io/gh/awegrzyn/influxdb-cxx)
+This is a fork of the now archived influxdb access library writtren by https://github.com/awegrzyn/influxdb-cxx.git. The goal of this fork is to remove the dependencies to boost and curl. For a number of IoT applications there is no need for such a complex configuration.
 
+THIS IS WORK IN PROGRESS; PLEASE WAIT UNTIL IT IS DONE!!!
 
 InfluxDB C++ client library
  - Batch write
@@ -18,10 +18,6 @@ InfluxDB C++ client library
  __Build requirements__
  - CMake 3.12+
  - C++17 compliler
-
-__Dependencies__
- - CURL (required)
- - boost 1.57+ (optional - see [Transports](#transports))
 
 ### Generic
  ```bash
@@ -83,6 +79,6 @@ List of supported transport is following:
 
 | Name        | Dependency  | URI protocol   | Sample URI                            |
 | ----------- |:-----------:|:--------------:| -------------------------------------:|
-| HTTP        | cURL        | `http`/`https` | `http://localhost:8086/?db=<db>`      |
-| UDP         | boost       | `udp`          | `udp://localhost:8094`                |
-| Unix socket | boost       | `unix`         | `unix:///tmp/telegraf.sock`           |
+| HTTP        | none        | `http`         | `http://localhost:8086/?db=<db>`      |
+| UDP         | none        | `udp`          | `udp://localhost:8094`                |
+
