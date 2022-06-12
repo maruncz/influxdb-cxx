@@ -2,6 +2,8 @@
 /// \author Adam Wegrzynek <adam.wegrzynek@cern.ch>
 ///
 
+#ifdef INFLUXDB_WITH_CURL
+
 #include "HTTP.h"
 #include "InfluxDBException.h"
 #include <iostream>
@@ -124,3 +126,5 @@ void HTTP::send(std::string&& post)
 
 } // namespace transports
 } // namespace influxdb
+
+#endif // INFLUXDB_WITH_CURL

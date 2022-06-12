@@ -50,10 +50,12 @@ if(CURL_INCLUDE_DIR)
   endforeach()
 endif()
 
-include(FindPackageHandleStandardArgs)
-FIND_PACKAGE_HANDLE_STANDARD_ARGS(CURL
+if(CURL_INCLUDE_DIR)
+  include(FindPackageHandleStandardArgs)
+  FIND_PACKAGE_HANDLE_STANDARD_ARGS(CURL
                                   REQUIRED_VARS CURL_LIBRARY CURL_INCLUDE_DIR
                                   VERSION_VAR CURL_VERSION_STRING)
+endif()
 
 if(CURL_FOUND)
   set(CURL_LIBRARIES ${CURL_LIBRARY})
@@ -64,4 +66,7 @@ if(CURL_FOUND)
     set_target_properties(CURL::libcurl PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${CURL_INCLUDE_DIRS}")
     set_property(TARGET CURL::libcurl APPEND PROPERTY IMPORTED_LOCATION "${CURL_LIBRARY}")
   endif()
+  set(CURL_FOUND true)
+else()
+  set(CURL_FOUND false)
 endif()

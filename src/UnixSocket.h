@@ -5,6 +5,8 @@
 #ifndef INFLUXDATA_TRANSPORTS_UNIX_H
 #define INFLUXDATA_TRANSPORTS_UNIX_H
 
+#ifdef INFLUXDB_WITH_BOOST
+
 #include "Transport.h"
 
 #include <boost/asio.hpp>
@@ -42,4 +44,5 @@ class UnixSocket : public Transport
 } // namespace transports
 } // namespace influxdb
 
+#endif // INFLUXDB_WITH_BOOST
 #endif // INFLUXDATA_TRANSPORTS_UNIX_H

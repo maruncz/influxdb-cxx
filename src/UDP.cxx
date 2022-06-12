@@ -1,6 +1,7 @@
 ///
 /// \author Adam Wegrzynek <adam.wegrzynek@cern.ch>
 ///
+#ifdef INFLUXDB_WITH_BOOST
 
 #include "UDP.h"
 #include "InfluxDBException.h"
@@ -31,3 +32,5 @@ void UDP::send(std::string&& message)
 
 } // namespace transports
 } // namespace influxdb
+
+#endif // INFLUXDB_WITH_BOOST

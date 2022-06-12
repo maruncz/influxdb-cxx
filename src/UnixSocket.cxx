@@ -2,6 +2,8 @@
 /// \author Adam Wegrzynek <adam.wegrzynek@cern.ch>
 ///
 
+#ifdef INFLUXDB_WITH_BOOST
+
 #include "UnixSocket.h"
 #include "InfluxDBException.h"
 #include <string>
@@ -30,3 +32,5 @@ void UnixSocket::send(std::string&& message)
 
 } // namespace transports
 } // namespace influxdb
+
+#endif // INFLUXDB_WITH_BOOST

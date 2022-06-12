@@ -5,6 +5,8 @@
 #ifndef INFLUXDATA_TRANSPORTS_HTTP_H
 #define INFLUXDATA_TRANSPORTS_HTTP_H
 
+#ifdef INFLUXDB_WITH_CURL
+
 #include "Transport.h"
 #include <curl/curl.h>
 #include <memory>
@@ -61,4 +63,5 @@ class HTTP : public Transport
 } // namespace transports
 } // namespace influxdb
 
+#endif // INFLUXDB_WITH_CURL
 #endif // INFLUXDATA_TRANSPORTS_HTTP_H

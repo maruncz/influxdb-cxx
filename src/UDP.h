@@ -5,6 +5,8 @@
 #ifndef INFLUXDATA_TRANSPORTS_UDP_H
 #define INFLUXDATA_TRANSPORTS_UDP_H
 
+#ifdef INFLUXDB_WITH_BOOST
+
 #include "Transport.h"
 
 #include <boost/asio.hpp>
@@ -44,4 +46,5 @@ class UDP : public Transport
 } // namespace transports
 } // namespace influxdb
 
+#endif // INFLUXDB_WITH_BOOST
 #endif // INFLUXDATA_TRANSPORTS_UDP_H

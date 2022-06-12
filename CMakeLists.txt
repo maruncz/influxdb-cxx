@@ -4,8 +4,11 @@
 
 CMAKE_MINIMUM_REQUIRED(VERSION 3.5.2 FATAL_ERROR)
 
-option(BUILD_SHARED_LIBS "Build shared versions of libraries" ON)
-option(INFLUXCXX_TESTING "Enable testing for this component" ON)
+option(USE_CURL "Enable curl dependency" ON)
+option(USE_BOOST "Enable boost dependency" ON)
+
+option(BUILD_SHARED_LIBS "Build shared versions of libraries" OFF)
+option(INFLUXCXX_TESTING "Enable testing for this component" OFF)
 
 # Set cmake policy by version: https://cmake.org/cmake/help/latest/manual/cmake-policies.7.html
 if(${CMAKE_VERSION} VERSION_LESS 3.12)
@@ -15,17 +18,20 @@ else()
 endif()
 
 # Define project
-project(influxdb-cxx
+project(influxdb-cxx-fork
   VERSION 0.0.1
   DESCRIPTION "InfluxDB C++ client library"
   LANGUAGES CXX
 )
+message("PROJECT_NAME ${PROJECT_NAME}")
 
 # Documentation dir
 #add_subdirectory(doc)
 
 # Add compiler flags for warnings and debug symbols
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic -Wextra")
+if(CMAKE_COMPILER_IS_GNUCXX)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic -Wextra")
+endif()
 
 # Set fPIC for all targets
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
@@ -33,7 +39,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 # Set CMAKE_INSTALL_LIBDIR explicitly to lib (to avoid lib64 on CC7)
 set(CMAKE_INSTALL_LIBDIR lib)
 
-# Set the default build type to "RelWithDebInfo"
+# Set the default build type to "RelWithDebInfoC"
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   set(CMAKE_BUILD_TYPE "RelWithDebInfo"
     CACHE
@@ -43,7 +49,7 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 endif()
 
 # Add coverage flags to Debug build
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+if(CMAKE_BUILD_TYPE STREQUAL "Debug" AND CMAKE_COMPILER_IS_GNUCXX)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 --coverage")
 endif()
 
@@ -56,9 +62,22 @@ set(Boost_USE_MULTITHREADED TRUE)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
-find_package(Boost COMPONENTS unit_test_framework system program_options)
-find_package(CURL REQUIRED MODULE)
+if(USE_BOOST)
+  message("trying to find Boost")
+  find_package(Boost COMPONENTS unit_test_framework system program_options)
+  message("Boost_FOUND ${Boost_FOUND}")
+else()
+  set(Boost_FOUND false)
+endif()
 
+if(USE_CURL) 
+  message("trying to find CURL")
+  set(CURL_FIND_REQUIRED false)
+  find_package(CURL REQUIRED MODULE)
+  message("CURL_FOUND ${CURL_FOUND}")
+else()
+  set(CURL_FOUND false)
+endif()
 
 ####################################
 # Library
@@ -73,13 +92,16 @@ set(INCLUDE_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/include")
 #       as boost is build without -fPIC, we cannot
 #       statically link against it when building
 #       influxdb as shared object
-add_library(InfluxDB
+add_library(InfluxDB STATIC
   src/InfluxDB.cxx
   src/Point.cxx
   src/InfluxDBFactory.cxx
   $<$<BOOL:${Boost_FOUND}>:src/UDP.cxx>
   $<$<BOOL:${Boost_FOUND}>:src/UnixSocket.cxx>
-  src/HTTP.cxx
+  src/UDPSocket.cxx>
+  $<$<BOOL:${CURL_FOUND}>:src/HTTP.cxx>
+  src/HttpClient.cpp>
+  src/Url.cpp>
 )
 target_include_directories(InfluxDB
   PUBLIC
@@ -93,7 +115,7 @@ target_include_directories(InfluxDB
 target_link_libraries(InfluxDB
   PRIVATE
     $<$<BOOL:${Boost_FOUND}>:Boost::system>
-    CURL::libcurl
+    $<$<BOOL:${CURL_FOUND}>:CURL::libcurl>
 )
 
 # Use C++17
@@ -103,6 +125,7 @@ target_compile_features(InfluxDB PUBLIC cxx_std_17)
 target_compile_definitions(InfluxDB
   PRIVATE
     $<$<BOOL:${Boost_FOUND}>:INFLUXDB_WITH_BOOST>
+    $<$<BOOL:${CURL_FOUND}>:INFLUXDB_WITH_CURL>
 )
 
 ####################################
