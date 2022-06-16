@@ -23,8 +23,11 @@
 #include "UDPSocket.h"
 #endif
 
-namespace influxdb
-{
+#ifdef LIB_NAMESPACE
+namespace LIB_NAMESPACE {
+#else
+namespace influxdb {
+#endif
 
 #ifdef INFLUXDB_WITH_BOOST
 std::unique_ptr<Transport> withUdpTransport(const http::url& uri) {

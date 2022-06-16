@@ -8,8 +8,11 @@
 #include <stdexcept>
 #include <string>
 
-namespace influxdb
-{
+#ifdef LIB_NAMESPACE
+namespace LIB_NAMESPACE {
+#else
+namespace influxdb {
+#endif
 
 class  InfluxDBException: public std::runtime_error
 {

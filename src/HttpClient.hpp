@@ -1,11 +1,13 @@
-#ifndef __INFLUXDB_HTTP_CLIENT_H
-#define __INFLUXDB_HTTP_CLIENT_H
+#ifndef __RALFOGIT_HTTPCLIENT_HPP__
+#define __RALFOGIT_HTTPCLIENT_HPP__
 
-#include <memory>
 #include <string>
 
-namespace influxdb
-{
+#ifdef LIB_NAMESPACE
+namespace LIB_NAMESPACE {
+#else
+namespace libralfogit {
+#endif
 
     /**
      *  Class implementing a very basic http client.
@@ -35,6 +37,6 @@ namespace influxdb
         size_t get_next_chunk_offset(char* buffer, size_t buffer_size);
     };
 
-}       // namespace influxdb
+}   // namespace ralfogit
 
-#endif // __INFLUXDB_HTTP_CLIENT_H
+#endif

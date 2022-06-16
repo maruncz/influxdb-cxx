@@ -14,11 +14,14 @@
 #include "Transport.h"
 #include "Point.h"
 
-namespace influxdb
-{
+#ifdef LIB_NAMESPACE
+namespace LIB_NAMESPACE {
+#else
+namespace influxdb {
+#endif
 
-class InfluxDB
-{
+class InfluxDB {
+
   public:
     /// Disable copy constructor
     InfluxDB & operator=(const InfluxDB&) = delete;

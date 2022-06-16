@@ -17,7 +17,11 @@
 #include <stdlib.h>
 #include <UDPSocket.h>
 
+#ifdef LIB_NAMESPACE
+namespace LIB_NAMESPACE {
+#else
 namespace influxdb {
+#endif
 namespace transports {
 
 

@@ -6,8 +6,12 @@
 #include <Transport.h>
 #include <HttpClient.hpp>
 
-namespace influxdb
-{
+#ifdef LIB_NAMESPACE
+namespace LIB_NAMESPACE {
+#else
+namespace influxdb {
+#endif
+
     namespace transports
     {
         //

@@ -12,8 +12,11 @@
 #include <boost/asio.hpp>
 #include <string>
 
-namespace influxdb
-{
+#ifdef LIB_NAMESPACE
+namespace LIB_NAMESPACE {
+#else
+namespace influxdb {
+#endif
 namespace transports
 {
 

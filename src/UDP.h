@@ -13,10 +13,12 @@
 #include <chrono>
 #include <string>
 
-namespace influxdb
-{
-namespace transports
-{
+#ifdef LIB_NAMESPACE
+namespace LIB_NAMESPACE {
+#else
+namespace influxdb {
+#endif
+namespace transports {
 
 /// \brief UDP transport
 class UDP : public Transport

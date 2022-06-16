@@ -7,10 +7,12 @@
 #include "InfluxDBException.h"
 #include <string>
 
-namespace influxdb
-{
-namespace transports
-{
+#ifdef LIB_NAMESPACE
+namespace LIB_NAMESPACE {
+#else
+namespace influxdb {
+#endif
+namespace transports {
 
 UDP::UDP(const std::string &hostname, int port) :
   mSocket(mIoService, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), 0))

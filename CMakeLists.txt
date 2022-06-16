@@ -124,6 +124,7 @@ target_compile_features(InfluxDB PUBLIC cxx_std_17)
 # Set compile definition if Boost found
 target_compile_definitions(InfluxDB
   PRIVATE
+    LIB_NAMESPACE=influxdb
     $<$<BOOL:${Boost_FOUND}>:INFLUXDB_WITH_BOOST>
     $<$<BOOL:${CURL_FOUND}>:INFLUXDB_WITH_CURL>
 )

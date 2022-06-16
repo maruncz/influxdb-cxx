@@ -15,8 +15,11 @@
 #include <boost/property_tree/json_parser.hpp>
 #endif
 
-namespace influxdb
-{
+#ifdef LIB_NAMESPACE
+namespace LIB_NAMESPACE {
+#else
+namespace influxdb {
+#endif
 
 InfluxDB::InfluxDB(std::unique_ptr<Transport> transport) :
   mTransport(std::move(transport))

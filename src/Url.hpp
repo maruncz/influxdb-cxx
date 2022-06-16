@@ -1,9 +1,13 @@
-#ifndef __INFLUXDB_URL_HPP__
-#define __INFLUXDB_URL_HPP__
+#ifndef __RALFOGIT_URL_HPP__
+#define __RALFOGIT_URL_HPP__
 
 #include <string>
 
-namespace influxdb {
+#ifdef LIB_NAMESPACE
+namespace LIB_NAMESPACE {
+#else
+namespace libralfogit {
+#endif
 
     /**
      *  Class implementing url parsing.
@@ -37,6 +41,6 @@ namespace influxdb {
         std::string fragment;
     };
 
-}   // namespace libgoecharger
+}   // namespace ralfogit
 
 #endif

@@ -8,8 +8,11 @@
 #include <string>
 #include <stdexcept>
 
-namespace influxdb
-{
+#ifdef LIB_NAMESPACE
+namespace LIB_NAMESPACE {
+#else
+namespace influxdb {
+#endif
 
     /// \brief Transport interface
     class Transport

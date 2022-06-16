@@ -1,6 +1,6 @@
 /*
  * Copyright(C) 2022 RalfO. All rights reserved.
- * https://github.com/RalfOGit/libtasmota
+ * https://github.com/RalfOGit
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -41,7 +41,12 @@
 
 #include <HttpClient.hpp>
 #include <Url.hpp>
-using namespace influxdb;
+
+#ifdef LIB_NAMESPACE
+using namespace LIB_NAMESPACE;
+#else
+using namespace libralfogit;
+#endif
 
 /**
  *  Close the given socket in a platform portable way.
@@ -122,10 +127,8 @@ int HttpClient::sendHttpRequest(const std::string& url, const std::string& metho
     request.reserve(256 + request_data.length());
     request.append(method).append(" ").append(path).append(" HTTP/1.1\r\n");
     request.append("Host: ").append(host).append("\r\n");
-    request.append("User-Agent: influxdb-cxx/1.0\r\n");
+    request.append("User-Agent: ralfogit/1.0\r\n");
     request.append("Accept: */*\r\n");
-    request.append("Accept-Language: de,en-US;q=0.7,en;q=0.3\r\n");
-    request.append("Connection: keep-alive\r\n");
     if (request_data.length() > 0) {
         char buffer[32];
         snprintf(buffer, sizeof(buffer), "Content-Length: %llu\r\n", request_data.length());
@@ -182,7 +185,7 @@ int HttpClient::connect_to_server(const std::string& url, std::string& host, std
             }
             addr = addr->ai_next;
         }
-       freeaddrinfo(addr);
+        freeaddrinfo(addr);
     }
     perror("connecting stream socket failure");
     close_socket(socket_fd);
@@ -248,7 +251,7 @@ size_t HttpClient::recv_http_response(int socket_fd, char* recv_buffer, int recv
         int pollresult = poll(&fds, 1, 5000);
         if (pollresult == 0) {
             perror("poll timeout");
-            return (nbytes_total > 0 ? nbytes_total: -1);
+            return (nbytes_total > 0 ? nbytes_total : -1);
         }
         if (pollresult < 0) {
             perror("poll failure");
@@ -256,9 +259,9 @@ size_t HttpClient::recv_http_response(int socket_fd, char* recv_buffer, int recv
         }
 
         bool pollnval = (fds.revents & POLLNVAL) != 0;
-        bool pollerr  = (fds.revents & POLLERR)  != 0;
-        bool pollhup  = (fds.revents & POLLHUP)  != 0;
-        bool pollin   = (fds.revents & POLLIN)   != 0;
+        bool pollerr = (fds.revents & POLLERR) != 0;
+        bool pollhup = (fds.revents & POLLHUP) != 0;
+        bool pollin = (fds.revents & POLLIN) != 0;
 
         // check poll result
         if (pollin == true) {
@@ -356,7 +359,7 @@ int HttpClient::parse_http_response(const std::string& answer, std::string& http
         size_t ptr = content_offset;
         size_t next_chunk_offset = -2;
         while (next_chunk_offset != (size_t)-1 && next_chunk_offset != 0) {
-            next_chunk_offset   = get_next_chunk_offset((char*)answer.data() + ptr, answer.length() - ptr);
+            next_chunk_offset = get_next_chunk_offset((char*)answer.data() + ptr, answer.length() - ptr);
 
             size_t chunk_length = get_chunk_length((char*)answer.data() + ptr, answer.length() - ptr);
             size_t chunk_offset = get_chunk_offset((char*)answer.data() + ptr, answer.length() - ptr);
@@ -367,7 +370,7 @@ int HttpClient::parse_http_response(const std::string& answer, std::string& http
 
         // prepare response and content strings
         http_response = answer.substr(0, content_offset);
-        http_content  = temp_content;
+        http_content = temp_content;
     }
     else {
         // extract content length
@@ -386,7 +389,7 @@ int HttpClient::parse_http_response(const std::string& answer, std::string& http
 
         // prepare response and content strings
         http_response = answer.substr(0, content_offset);
-        http_content  = answer.substr(content_offset);
+        http_content = answer.substr(content_offset);
     }
 
     return http_return_code;
@@ -395,7 +398,7 @@ int HttpClient::parse_http_response(const std::string& answer, std::string& http
 
 /**
  * Parse http header and determine http return code.
- * @param buffer pointer to a buffer holding an http header 
+ * @param buffer pointer to a buffer holding an http header
  * @param buffer_size size of the buffer; buffer_size must be one byte less than the underlying buffer size
  * @return the http return code if it is described in the http header, -1 otherwise
  */
@@ -429,7 +432,7 @@ size_t HttpClient::get_content_length(char* buffer, size_t buffer_size) {
     if (substr != NULL) {
         substr += strlen("\r\nContent-Length: ");
         long long length = -1;
-        if ((size_t)(substr-buffer) < buffer_size && sscanf(substr, " %lld", &length) == 1) {
+        if ((size_t)(substr - buffer) < buffer_size && sscanf(substr, " %lld", &length) == 1) {
             return length;
         }
     }
@@ -520,7 +523,7 @@ size_t HttpClient::get_next_chunk_offset(char* buffer, size_t buffer_size) {
     if (chunk_offset == (size_t)-1) {
         return -1;
     }
-    char *ptr = buffer + chunk_offset + chunk_length;
+    char* ptr = buffer + chunk_offset + chunk_length;
     if (ptr + 2 > buffer + buffer_size) {
         return -1;
     }

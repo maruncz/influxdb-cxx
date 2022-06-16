@@ -9,8 +9,11 @@
 #include <chrono>
 #include <variant>
 
-namespace influxdb
-{
+#ifdef LIB_NAMESPACE
+namespace LIB_NAMESPACE {
+#else
+namespace influxdb {
+#endif
 
 /// \brief Represents a point
 class Point

@@ -8,8 +8,11 @@
 #include "InfluxDB.h"
 #include "Transport.h"
 
-namespace influxdb
-{
+#ifdef LIB_NAMESPACE
+namespace LIB_NAMESPACE {
+#else
+namespace influxdb {
+#endif
 
 /// \brief InfluxDB factory
 class InfluxDBFactory
