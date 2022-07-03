@@ -7,6 +7,7 @@
 #else
     #include <sys/types.h>
     #include <sys/socket.h>
+    #include <netdb.h>
     #include <netinet/in.h>
     #include <arpa/inet.h>
 #endif
@@ -31,7 +32,7 @@ static void close_socket(int socket_fd) {
         int result = closesocket(socket_fd);
         WSACleanup();
 #else
-        int result = ::close(fd);
+        int result = ::close(socket_fd);
 #endif
     }
 }

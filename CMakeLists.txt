@@ -96,12 +96,12 @@ add_library(InfluxDB STATIC
   src/InfluxDB.cxx
   src/Point.cxx
   src/InfluxDBFactory.cxx
+  src/HttpClient.cpp
+  src/UDPSocket.cxx
+  src/Url.cpp
   $<$<BOOL:${Boost_FOUND}>:src/UDP.cxx>
   $<$<BOOL:${Boost_FOUND}>:src/UnixSocket.cxx>
-  src/UDPSocket.cxx>
   $<$<BOOL:${CURL_FOUND}>:src/HTTP.cxx>
-  src/HttpClient.cpp>
-  src/Url.cpp>
 )
 target_include_directories(InfluxDB
   PUBLIC

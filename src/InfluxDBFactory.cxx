@@ -38,7 +38,7 @@ std::unique_ptr<Transport> withUnixSocketTransport(const http::url& uri) {
 }
 #else
 std::unique_ptr<Transport> withUdpTransport(const http::url& uri) {
-    return std::make_unique<transports::UDPSocket>(uri.host, uri.port);
+  return std::make_unique<transports::UDPSocket>(uri.host, uri.port);
 }
 std::unique_ptr<Transport> withUnixSocketTransport(const http::url& /*uri*/) {
   throw InfluxDBException("InfluxDBFactory", "Unix socket transport requires Boost");
@@ -57,14 +57,14 @@ std::unique_ptr<Transport> withHttpTransport(const http::url& uri) {
   return transport;
 }
 std::unique_ptr<Transport> withHttpsTransport(const http::url& uri) {
-    return withHttpTransport(uri);
+  return withHttpTransport(uri);
 }
 #else
 std::unique_ptr<Transport> withHttpTransport(const http::url& uri) {
-    return std::make_unique<transports::HttpClientWrapper>(uri.full_url);
+  return std::make_unique<transports::HttpClientWrapper>(uri.full_url);
 }
 std::unique_ptr<Transport> withHttpsTransport(const http::url& uri) {
-    throw InfluxDBException("InfluxDBFactory", "HTTPStransport requires curl");
+  throw InfluxDBException("InfluxDBFactory", "HTTPStransport requires curl");
 }
 #endif
 
