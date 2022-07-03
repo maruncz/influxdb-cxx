@@ -10,6 +10,7 @@
     #include <netdb.h>
     #include <netinet/in.h>
     #include <arpa/inet.h>
+    #include <unistd.h>
 #endif
 
 #include <cstdint>
@@ -29,10 +30,9 @@ namespace transports {
 static void close_socket(int socket_fd) {
     if (socket_fd >= 0) {
 #ifdef _WIN32
-        int result = closesocket(socket_fd);
-        WSACleanup();
+        closesocket(socket_fd);
 #else
-        int result = ::close(socket_fd);
+        close(socket_fd);
 #endif
     }
 }

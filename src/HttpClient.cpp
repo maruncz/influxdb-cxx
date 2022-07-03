@@ -455,7 +455,9 @@ size_t HttpClient::get_content_offset(char* buffer, size_t buffer_size) {
     char* substr = strstr(buffer, "\r\n\r\n");
     if (substr != NULL) {
         substr += strlen("\r\n\r\n");
-        return (substr - buffer);
+        if (substr <= buffer + buffer_size) {
+            return (substr - buffer);
+        }
     }
     return -1;
 }
@@ -488,7 +490,7 @@ bool HttpClient::is_chunked_encoding(char* buffer, size_t buffer_size) {
 size_t HttpClient::get_chunk_length(char* buffer, size_t buffer_size) {
     unsigned long long length = -1;
     int num_chars = 0;
-    if (sscanf(buffer, "%llx%n", &length, &num_chars) == 1 && num_chars <= buffer_size) {
+    if (sscanf(buffer, "%llx%n", &length, &num_chars) == 1 && (size_t)num_chars <= buffer_size) {
         return (size_t)length;
     }
     return -1;
