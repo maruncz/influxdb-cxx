@@ -56,14 +56,14 @@ std::unique_ptr<Transport> withHttpTransport(const http::url& uri) {
   }
   return transport;
 }
-std::unique_ptr<Transport> withHttpsTransport(const http::url& /*uri*/) {
+std::unique_ptr<Transport> withHttpsTransport(const http::url& uri) {
   return withHttpTransport(uri);
 }
 #else
 std::unique_ptr<Transport> withHttpTransport(const http::url& uri) {
   return std::make_unique<transports::HttpClientWrapper>(uri.full_url);
 }
-std::unique_ptr<Transport> withHttpsTransport(const http::url& uri) {
+std::unique_ptr<Transport> withHttpsTransport(const http::url& /*uri*/) {
   throw InfluxDBException("InfluxDBFactory", "HTTPStransport requires curl");
 }
 #endif
