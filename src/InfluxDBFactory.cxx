@@ -56,7 +56,7 @@ std::unique_ptr<Transport> withHttpTransport(const http::url& uri) {
   }
   return transport;
 }
-std::unique_ptr<Transport> withHttpsTransport(const http::url& uri) {
+std::unique_ptr<Transport> withHttpsTransport(const http::url& /*uri*/) {
   return withHttpTransport(uri);
 }
 #else
