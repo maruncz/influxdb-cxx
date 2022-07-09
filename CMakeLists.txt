@@ -4,8 +4,8 @@
 
 CMAKE_MINIMUM_REQUIRED(VERSION 3.5.2 FATAL_ERROR)
 
-option(USE_CURL "Enable curl dependency" ON)
-option(USE_BOOST "Enable boost dependency" ON)
+option(USE_CURL "Enable curl dependency" OFF)
+option(USE_BOOST "Enable boost dependency" OFF)
 
 option(BUILD_SHARED_LIBS "Build shared versions of libraries" OFF)
 option(INFLUXCXX_TESTING "Enable testing for this component" OFF)
@@ -50,7 +50,8 @@ endif()
 
 # Add coverage flags to Debug build
 if(CMAKE_BUILD_TYPE STREQUAL "Debug" AND CMAKE_COMPILER_IS_GNUCXX)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 --coverage")
+  #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 --coverage")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0")
 endif()
 
 # Fixes warning when using boost from brew
@@ -113,9 +114,10 @@ target_include_directories(InfluxDB
 
 # Link targets
 target_link_libraries(InfluxDB
-  PRIVATE
+  PUBLIC
     $<$<BOOL:${Boost_FOUND}>:Boost::system>
     $<$<BOOL:${CURL_FOUND}>:CURL::libcurl>
+    #gcov
 )
 
 # Use C++17
