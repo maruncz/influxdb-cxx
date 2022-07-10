@@ -11,7 +11,7 @@ InfluxDB C++ client library
  - Supported embedded transports
    - HTTP with Basic Auth
    - UDP
-   Supported with external library dependencies
+ - Supported with external library dependencies
      HTTPS with Basic Auth
    - Unix datagram socket
 
@@ -23,8 +23,10 @@ InfluxDB C++ client library
  - C++17 compliler
 
  In CMakeLists.txt configure external library dependencies:
- option(USE_CURL "Enable curl dependency" OFF)      # switch ON if you need https
- option(USE_BOOST "Enable boost dependency" OFF)    # switch ON if you need Unix datagram sockets
+```bash
+option(USE_CURL "Enable curl dependency" OFF)      # switch ON if you need https
+option(USE_BOOST "Enable boost dependency" OFF)    # switch ON if you need Unix datagram sockets
+```
 
 ### Generic
  ```bash
