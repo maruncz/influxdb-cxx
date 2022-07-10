@@ -1,15 +1,18 @@
 # influxdb-cxx-fork
 
-This is a fork of the now archived influxdb access library writtren by https://github.com/awegrzyn/influxdb-cxx.git. The goal of this fork is to remove the dependencies to boost and curl. For a number of IoT applications there is no need for such a complex configuration.
+This is a fork of the now archived influxdb access library written by https://github.com/awegrzyn/influxdb-cxx.git.
 
-THIS IS WORK IN PROGRESS; PLEASE WAIT UNTIL IT IS DONE!!!
+A large number of IoT applications rely on simple REST APIs with minimum requirements on the http implementation. 
+The goal of this fork is to support such applications with a small footprint library by removing dependencies to boost and curl. 
 
 InfluxDB C++ client library
  - Batch write
  - Data exploration
- - Supported transports
-   - HTTP/HTTPS with Basic Auth
+ - Supported embedded transports
+   - HTTP with Basic Auth
    - UDP
+   Supported with external library dependencies
+     HTTPS with Basic Auth
    - Unix datagram socket
 
 
@@ -19,10 +22,14 @@ InfluxDB C++ client library
  - CMake 3.12+
  - C++17 compliler
 
+ In CMakeLists.txt configure external library dependencies:
+ option(USE_CURL "Enable curl dependency" OFF)      # switch ON if you need https
+ option(USE_BOOST "Enable boost dependency" OFF)    # switch ON if you need Unix datagram sockets
+
 ### Generic
  ```bash
-git clone https://github.com/awegrzyn/influxdb-cxx.git
-cd influxdb-cxx; mkdir build
+git clone https://github.com/ralfogit/influxdb-cxx-fork.git
+cd influxdb-cxx-fork; mkdir build
 cd build
 cmake ..
 sudo make install
@@ -77,8 +84,10 @@ An underlying transport is fully configurable by passing an URI:
 <br>
 List of supported transport is following:
 
-| Name        | Dependency  | URI protocol   | Sample URI                            |
-| ----------- |:-----------:|:--------------:| -------------------------------------:|
-| HTTP        | none        | `http`         | `http://localhost:8086/?db=<db>`      |
-| UDP         | none        | `udp`          | `udp://localhost:8094`                |
+| Name                 | Dependency               | URI protocol   | Sample URI                        |
+| ---------------------|:------------------------:|:--------------:|:----------------------------------|
+| HTTP                 | none                     | `http`         | `http://localhost:8086/?db=<db>`  |
+| UDP                  | none                     | `udp`          | `udp://localhost:8094`            |
+| HTTPS                | libcurl,libssl,libcrypto | `https`        | `https://localhost:8086/?db=<db>` |
+| Unix datagram socket | boost                    | `unix`         | `unix:///tmp/telegraf.sock`       |
 
