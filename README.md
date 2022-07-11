@@ -3,7 +3,8 @@
 This is a fork of the now archived influxdb access library written by https://github.com/awegrzyn/influxdb-cxx.git.
 
 A large number of IoT applications rely on simple REST APIs with minimum requirements on the http implementation. 
-The goal of this fork is to support such applications with a small footprint library by removing dependencies to boost and curl. 
+The goal of this fork is to support such applications with a small footprint and self-contained influxdb client library by removing dependencies to boost and curl from the original library. 
+
 
 InfluxDB C++ client library
  - Batch write
@@ -79,12 +80,12 @@ std::vector<Point> points = idb->query("SELECT * FROM test");
 
 ## Transports
 
-An underlying transport is fully configurable by passing an URI:
+An underlying session protocol is fully configurable by passing an URI:
 ```
 [protocol]://[username:password@]host:port[/?db=database]
 ```
 <br>
-List of supported transport is following:
+List of supported protocols:
 
 | Name                 | Dependency               | URI protocol   | Sample URI                        |
 | ---------------------|:------------------------:|:--------------:|:----------------------------------|
