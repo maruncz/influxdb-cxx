@@ -94,15 +94,28 @@ set(INCLUDE_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/include")
 #       statically link against it when building
 #       influxdb as shared object
 add_library(InfluxDB STATIC
-  src/InfluxDB.cxx
-  src/Point.cxx
-  src/InfluxDBFactory.cxx
   src/HttpClient.cpp
+  src/HttpClient.hpp
+  src/HttpClientWrapper.h
+  src/InfluxDB.cxx
+  include/InfluxDB.h
+  src/InfluxDBException.h
+  src/InfluxDBFactory.cxx
+  include/InfluxDBFactory.h
+  src/Point.cxx
+  include/Point.h
+  include/Transport.h
   src/UDPSocket.cxx
+  src/UDPSocket.h
+  src/UriParser.h
   src/Url.cpp
-  $<$<BOOL:${Boost_FOUND}>:src/UDP.cxx>
-  $<$<BOOL:${Boost_FOUND}>:src/UnixSocket.cxx>
+  src/Url.hpp
   $<$<BOOL:${CURL_FOUND}>:src/HTTP.cxx>
+  $<$<BOOL:${CURL_FOUND}>:src/HTTP.h>
+  $<$<BOOL:${Boost_FOUND}>:src/UDP.cxx>
+  $<$<BOOL:${Boost_FOUND}>:src/UDP.h>
+  $<$<BOOL:${Boost_FOUND}>:src/UnixSocket.cxx>
+  $<$<BOOL:${Boost_FOUND}>:src/UnixSocket.h>
 )
 target_include_directories(InfluxDB
   PUBLIC
